@@ -1,6 +1,4 @@
-provider "aws" {
-  region = "us-east-1" 
-}
+
 resource "aws_route_table" "route_table_ajea14019" {
     vpc_id = var.vpc_id    
     route{

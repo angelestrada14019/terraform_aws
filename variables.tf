@@ -1,3 +1,7 @@
+variable "region" {
+  default ="us-east-1"
+}
+
 variable "main_vpc_cidr" {
 description = "Nuestro Security Group"
 default = "10.0.0.0/24"

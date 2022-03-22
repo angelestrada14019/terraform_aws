@@ -1,6 +1,4 @@
-provider "aws" {
-  region = "us-east-1" 
-}
+
 resource "aws_security_group" "ssh_conection" { 
     name= var.sg_name 
     vpc_id = var.vpc_id

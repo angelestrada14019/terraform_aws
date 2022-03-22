@@ -1,6 +1,4 @@
-provider "aws" {
-  region = "us-east-1" 
-}
+
 resource "aws_instance" "practica1_ajea14019" {   
     ami=var.ami_id
     instance_type = var.instance_type

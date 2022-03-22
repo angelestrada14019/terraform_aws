@@ -1,6 +1,3 @@
-provider "aws" {
-  region = "us-east-1" 
-}
 
 resource "aws_internet_gateway" "ig_ajea14019" {
     vpc_id = var.vpc_id
