@@ -19,3 +19,6 @@ variable "key_name" {
 variable "security_groups" {
  
 }
+variable "user_data" {
+  
+}

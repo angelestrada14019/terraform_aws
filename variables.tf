@@ -71,7 +71,7 @@ variable "tags_route_table_private" {
 }
 
 variable "ami_id" {
-  default = "ami-0c02fb55956c7d316"
+  default = "ami-0e472ba40eb589f49"
   description = "ID de la imagen de Amazon"
   type = string
 }
@@ -100,6 +100,18 @@ variable "ingres_rules" {
       to_port= "22",
       protocol= "tcp",
       cidr_blocks: ["0.0.0.0/0"]
+    },
+    {
+      from_port= "3000",
+      to_port= "3000",
+      protocol= "tcp",
+      cidr_blocks: ["0.0.0.0/0"]
+    },
+    {
+      from_port= "80",
+      to_port= "80",
+      protocol= "tcp",
+      cidr_blocks: ["0.0.0.0/0"]
     }]
     description = "Reglas de ingreso"    
 }
@@ -115,4 +127,7 @@ variable "egress_rules" {
 }
 variable "key_name" {
   default = "clave-prueba-ansible-ajea14019"
+}
+variable "user_data" {
+  default="scrip.sh"
 }

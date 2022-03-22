@@ -7,9 +7,7 @@ resource "aws_instance" "practica1_ajea14019" {
     tags=var.intance_tags
     key_name = var.key_name
     subnet_id=var.subnet_id
-    //ip auto assignation
-    
-
     security_groups = [var.security_groups]
-    #user_data = file("modulos/instance/user_data.yaml")
+    user_data = file(var.user_data)   
+    
 }

@@ -85,6 +85,7 @@ module "instance_module"{
     intance_tags=var.instance_tags
     key_name=var.key_name
     security_groups=module.sg_module.id 
+    user_data=var.user_data
     
 }
 
