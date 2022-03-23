@@ -4,7 +4,7 @@ variable "ami_id" {
 variable "instance_type" {
   
 }
-variable "intance_tags" {
+variable "instance_tags" {
  
 }
 variable "subnet_id"{

@@ -9,17 +9,13 @@ module "ig_module" {
     vpc_id=module.vpc_module.id
     tags=var.tags_ig
 }
-module "subnet_publica" {
+module "subnet_module"{
     source = "./modules/subnet"
+    count=2
     vpc_id=module.vpc_module.id
-    cidr_block=var.public_subnets
-    tags=var.tags_subnet_public 
-}
-module "subnet_privada" {
-    source = "./modules/subnet"
-    vpc_id=module.vpc_module.id
-    cidr_block=var.private_subnets
-    tags=var.tags_subnet_private
+    cidr_block=var.subnets_cidr[count.index]
+    tags=var.subnets_tags[count.index] 
+
 }
 module "route_table_module_public" {
     source = "./modules/route_table"
@@ -30,19 +26,16 @@ module "route_table_module_public" {
     tags=var.tags_route_table_public
 }
 module "elastic_ip_module" {
-    source = "./modules/elastic_ip"    
-    tags=var.tags_ip_elastic
+    source = "./modules/elastic_ip"
+    count =3    
+    tags=var.tags_ip_elastic[count.index]
   
 }
-module "elastic_ip_module_ec2" {
-    source = "./modules/elastic_ip"    
-    tags=var.tags_ip_elastic_ec2
-  
-}
+
 module "nat_gateway_module" {
     source = "./modules/nat_gatway"
-    nat_gateway_id=module.elastic_ip_module.id
-    subnet_id=module.subnet_publica.id
+    nat_gateway_id=module.elastic_ip_module[0].id
+    subnet_id=module.subnet_module[0].id
     tags=var.tags_nat_gateway
 }
 module "route_table_module_private" {
@@ -55,35 +48,43 @@ module "route_table_module_private" {
 }
 module "public_rt_association" {
     source = "./modules/rot_table_asso_subnet"
-    subnet_id=module.subnet_publica.id  
+    subnet_id=module.subnet_module[0].id  
     route_table_id=module.route_table_module_public.id
 }
 module "private_rt_association" {
     source = "./modules/rot_table_asso_subnet"
-    subnet_id=module.subnet_privada.id  
+    subnet_id=module.subnet_module[1].id  
     route_table_id=module.route_table_module_private.id
 }
 module "sg_module" {
     source = "./modules/security_groups"
-    sg_name=var.name_sg
-    ingres_rules=var.ingres_rules
-    egress_rules=var.egress_rules
+    count=2
+    sg_name=var.name_sg[count.index]
+    ingres_rules=var.ingres_rules[count.index]
+    egress_rules=var.egress_rules[count.index]
     vpc_id=module.vpc_module.id
 }
 module "eip_asso_instance_module"{
     source = "./modules/eip_asso_instance"  
-    instance_id=module.instance_module.id
-    eip_id=module.elastic_ip_module_ec2.id
+    count=2
+    instance_id=module.instance_module[count.index].id
+    eip_id=module.elastic_ip_module[count.index + 1].id
 }
+
+
+
 module "instance_module"{
-    source = "./modules/instance"  
+    source = "./modules/instance" 
+    count=2
+    subnet_id=module.subnet_module[count.index].id
+    instance_tags=var.instance_tags[count.index]
+    security_groups=module.sg_module[count.index].id 
+    user_data=var.user_data[count.index]
+
     ami_id=var.ami_id    
-    subnet_id=module.subnet_publica.id
     instance_type=var.instance_type
-    intance_tags=var.instance_tags
     key_name=var.key_name
-    security_groups=module.sg_module.id 
-    user_data=var.user_data
     
 }
+
 
