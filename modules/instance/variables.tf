@@ -22,3 +22,6 @@ variable "security_groups" {
 variable "user_data" {
   
 }
+variable "associate_public_ip_address" {
+  
+}

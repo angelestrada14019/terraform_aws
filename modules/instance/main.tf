@@ -7,5 +7,6 @@ resource "aws_instance" "practica1_ajea14019" {
     subnet_id=var.subnet_id
     security_groups = [var.security_groups]
     user_data = file(var.user_data)   
+    associate_public_ip_address =var.associate_public_ip_address
     
 }

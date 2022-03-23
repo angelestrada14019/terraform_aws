@@ -82,6 +82,12 @@ variable "instance_type" {
   description = "Tipo de instancia"
   type = string
 }
+# variable "instance_tags_name" {
+#   default=[
+#         "instance-public-terraform_module-ajea14019",
+#         "instance-private-terraform_module-ajea14019"    
+#   ]
+# }
 variable "instance_tags" {
   default = [
       {
