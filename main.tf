@@ -9,7 +9,7 @@ module "ig_module" {
     vpc_id=module.vpc_module.id
     tags=var.tags_ig
 }
-module "subnet_module"{
+module "subnet_module"{ //0 para subnet publico y 1 para subnet privado
     source = "./modules/subnet"
     count=length(var.subnets_tags)
     vpc_id=module.vpc_module.id
@@ -25,7 +25,7 @@ module "route_table_module_public" {
     nat_gateway_id=null    
     tags=var.tags_route_table_public
 }
-module "elastic_ip_module" {
+module "elastic_ip_module" { //0 para ip del nat, 1 publico y 2 privado
     source = "./modules/elastic_ip"
     count =length(var.tags_ip_elastic)   
     tags=var.tags_ip_elastic[count.index]
@@ -96,7 +96,7 @@ locals {
             instance_tags=var.instance_tags[0]
             security_groups=module.sg_module[0].id
             user_data=var.user_data[0]
-            associate_public_ip_address=false
+            associate_public_ip_address=true
 
         },
         {
@@ -106,7 +106,7 @@ locals {
             instance_tags=var.instance_tags[1]
             security_groups=module.sg_module[1].id
             user_data=var.user_data[1]
-            associate_public_ip_address=false
+            associate_public_ip_address=true
         }
   ]
 }    
@@ -126,6 +126,27 @@ module "instance_module" {
     instance_type=var.instance_type
     key_name=var.key_name
 
+}
+# module "db_subnet_group" {
+#     source = "./modules/db_rds_group_subnet"
+#     name_db_group_subnet=var.name_db_group_subnet
+#     subnet_ids=[module.subnet_module[1].id]
+#     tags_db_group_subnet=var.tags_db_group_subnet
+# }
+
+module "rds_instance" {
+    source="./modules/rds_instance"
+    allocated_storage=var.allocated_storage
+    storage_type=var.storage_type
+    engine = var.engine
+    engine_version= var.engine_version
+    instance_class= var.instance_class
+    name_db=var.name_db
+    username = var.username
+    password = var.password
+    availability_zone=var.availability_zone
+    parameter_group_name = var.parameter_group_name  
+    db_subnet_group_name = null
 }
 
 
