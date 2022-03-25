@@ -15,6 +15,7 @@ module "subnet_module"{ //0 para subnet publico y 1 para subnet privado
     vpc_id=module.vpc_module.id
     cidr_block=var.subnets_cidr[count.index]
     tags=var.subnets_tags[count.index] 
+    availability_zone=var.subnets_availability_zone[count.index]
 
 }
 module "route_table_module_public" {
@@ -127,12 +128,12 @@ module "instance_module" {
     key_name=var.key_name
 
 }
-# module "db_subnet_group" {
-#     source = "./modules/db_rds_group_subnet"
-#     name_db_group_subnet=var.name_db_group_subnet
-#     subnet_ids=[module.subnet_module[1].id]
-#     tags_db_group_subnet=var.tags_db_group_subnet
-# }
+module "db_subnet_group" {
+    source = "./modules/db_rds_group_subnet"
+    name_db_group_subnet=var.name_db_group_subnet
+    subnet_ids=[module.subnet_module[0].id,module.subnet_module[1].id]
+    tags_db_group_subnet=var.tags_db_group_subnet
+}
 
 module "rds_instance" {
     source="./modules/rds_instance"
@@ -146,7 +147,7 @@ module "rds_instance" {
     password = var.password
     availability_zone=var.availability_zone
     parameter_group_name = var.parameter_group_name  
-    db_subnet_group_name = null
+    db_subnet_group_name = module.db_subnet_group.name
 }
 
 

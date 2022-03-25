@@ -11,4 +11,5 @@ resource "aws_db_instance" "db" {
   db_subnet_group_name = var.db_subnet_group_name
   availability_zone=var.availability_zone
   skip_final_snapshot  = true
+  multi_az = false
 }

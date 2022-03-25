@@ -26,6 +26,12 @@ variable "subnets_cidr" {
 
   ]
 }
+variable "subnets_availability_zone" {
+  default = [
+    "us-east-1a",
+    "us-east-1b"
+  ]
+}
 variable "subnets_tags" {
   default = [
     {
@@ -159,14 +165,14 @@ variable "user_data" {
   default = ["scrip.sh", "scrip.sh"]
 }
 
-# variable "name_db_group_subnet" {
-#   default = "db_subnet_group-ajea14019"
-# }
-# variable "tags_db_group_subnet" {
-#   default = {
-#     Name = "db_subnet_group-ajea14019"
-#   }
-# }
+variable "name_db_group_subnet" {
+  default = "db_subnet_group-ajea14019"
+}
+variable "tags_db_group_subnet" {
+  default = {
+    Name = "db_subnet_group-ajea14019"
+  }
+}
 
 variable "allocated_storage" {
   default     = 10
@@ -193,7 +199,7 @@ variable "password" {
   default     = "foobarbaz"
 }
 variable "availability_zone" {
-  default     = "us-east-1a"
+  default     = "us-east-1b"
 }
 variable "parameter_group_name"{
     default     = "default.mysql8.0"
